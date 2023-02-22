@@ -1,7 +1,15 @@
-const articlesRouter = require('express').Router();
-const { getArticlesById } = require('../controller/articles.controller')
+const articlesRouter = require("express").Router();
 
-//'/' or '/:article_id'
-articlesRouter.route('/articles/:article_id').get(getArticlesById)
+const { getArticles, getArticlesById } = require('../controller/articles.controller')
+
+articlesRouter.route('/').get(getArticles)
+
+//new //'/' or '/:article_id' or ('/articles/:article_id')
+articlesRouter.route('/:article_id').get(getArticlesById)
+ 
 
 module.exports = articlesRouter;
+
+
+
+
