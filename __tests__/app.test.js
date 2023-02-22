@@ -41,24 +41,20 @@ describe('app', () => {
                         expect.objectContaining({
                             slug: expect.any(String),
                             description: expect.any(String)
+                           })
+                         )
+                        })
+                    })
+                });
+              })
+          })
+      })
+describe('Articles', () => {
+    
+//    it('should ', () => {
+    
+//    });
+    
 
-
-})
-
-                    )
-
-                })
-
-
-        })
-    });
-
-})
-
-    })
-
-
-
-
-
+        
 })

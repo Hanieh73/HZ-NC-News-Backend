@@ -7,7 +7,6 @@ const {handle500Error, handle404Error} = require('./errorhandler/errorhandler')
 
 
 
-
 app.use('/api', apiRouter)
 
 app.use(handle404Error)
