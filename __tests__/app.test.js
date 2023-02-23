@@ -1,6 +1,6 @@
 const request = require('supertest')
 const app = require('../app')
-
+require('jest-sorted')
 const db = require('../db/connection')
 const seed= require('../db/seeds/seed')
 
@@ -158,8 +158,8 @@ describe('app', () => {
                         .get('/api/articles/1/comments')
                         .expect(200)
                         .then(({ body }) => {
-                            console.log(body)
                             expect(body.comments).toBeInstanceOf(Array)
+                            expect(body.comments).toBeSortedBy('created_at', { descending: true })
                             expect(body.comments).toHaveLength(11)
                             body.comments.forEach((comment) => {
                                 expect(comment).toMatchObject({
@@ -179,6 +179,17 @@ describe('app', () => {
                     })
                 });
 
+                it('status 200 - for a valid article_id but empty comments', () => {
+                    return request(app)
+                        .get('/api/articles/8/comments')
+                        .expect(200)
+                        .then(({body}) => {
+                            expect(body.comments).toBeInstanceOf(Array)
+                            expect(body.comments).toHaveLength(0)
+                    
+                    })
+                });
+
                 it('status 404 - for a valid but non existent article_id', () => {
                     return request(app)
                         .get('/api/articles/999/comments')
@@ -189,6 +200,8 @@ describe('app', () => {
                     })
                     
                 });
+
+            
 
                 it('status 400 - for a bad request', () => {
                     return request(app)

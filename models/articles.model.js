@@ -26,16 +26,21 @@ exports.fetchArticlesById = (article_id) => {
 
 }
 
+
 exports.fetchCommentsByArticleId = (article_id) => {
-    
-    return db.query(`SELECT * FROM comments WHERE article_id = $1  ORDER BY comments.created_at DESC;`,[article_id]).then((result) => {
-        const comments = result.rows
-        if (result.rowCount === 0) {
-            return Promise.reject({msg: 'Not Found', status: 404})
+    return db.query(`SELECT * FROM articles WHERE article_id = $1;`, [article_id]).then((response) => {
+        if (response.rows.length === 0) {
+             return Promise.reject({msg: 'Not Found', status: 404})
         }
         else {
-            return comments
-        }
+            return db.query(`SELECT * FROM comments WHERE article_id = $1  ORDER BY comments.created_at DESC;`, [article_id]).then((result) => {
+                return result.rows
 
-    })
+             })
+        }
+     })
+
+       
+
+    
 }
