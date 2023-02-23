@@ -13,4 +13,18 @@ exports.fetchArticles = () => {
         return articles
     })
 
+
+}
+
+exports.fetchArticlesById = (article_id) => {
+    return db.query(`SELECT * FROM articles WHERE article_id = ${article_id};`).then((result) => {
+        const articles = result.rows 
+        if (result.rowCount === 0) {
+            return Promise.reject({ msg: 'Not Found', status: 404})
+        } else {
+            return articles[0]
+        }
+    
+    })
+
 }
