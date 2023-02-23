@@ -5,8 +5,11 @@ const articlesRouter = require('./articles.router')
 
 
 
-apiRouter.use("/articles", articlesRouter);
+
+
 apiRouter.use("/topics", topicsRouter);
+apiRouter.use("/articles", articlesRouter);
+
 
 
 module.exports = apiRouter;

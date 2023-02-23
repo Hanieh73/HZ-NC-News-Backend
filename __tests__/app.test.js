@@ -86,9 +86,7 @@ describe('app', () => {
             });
 
 
-        })
-        
-        describe('GET/api/articles/:article_id', () => {
+            describe('GET/api/articles/:article_id', () => {
              it('status 200 - responds with the corresponding article object', () => {
             return request(app).get('/api/articles/1')
                 .then((response) => {
@@ -129,16 +127,8 @@ describe('app', () => {
 
 
                         })
-    
-
-
-                       
-
                     }) 
-
-                })
-                
-            });
+               })
             
             it('status 404 - for a valid but non existent article_id ', () => {
                 return request(app)
@@ -148,9 +138,6 @@ describe('app', () => {
                     expect(body.msg).toBe('Not Found')
 
         })
-
-
-     
             });
 
             it('status 400 - for a bad request', () => {
@@ -163,10 +150,60 @@ describe('app', () => {
               })  
             })
 
-        })
+            })
+            
+            describe('GET/api/articles/:article_id/comments', () => {
+                it('status 200 - successful request should return the correct comment when passed an article_id', () => {
+                    return request(app)
+                        .get('/api/articles/1/comments')
+                        .expect(200)
+                        .then(({ body }) => {
+                            console.log(body)
+                            expect(body.comments).toBeInstanceOf(Array)
+                            expect(body.comments).toHaveLength(11)
+                            body.comments.forEach((comment) => {
+                                expect(comment).toMatchObject({
+                                    comment_id: expect.any(Number),
+                                    votes: expect.any(Number),
+                                    created_at: expect.any(String),
+                                    author: expect.any(String),
+                                    body: expect.any(String),
+                                    article_id: expect.any(Number)
 
-       
 
+                                })
+
+                            })
+                        
+
+                    })
+                });
+
+                it('status 404 - for a valid but non existent article_id', () => {
+                    return request(app)
+                        .get('/api/articles/999/comments')
+                        .expect(404)
+                        .then(({body}) => {
+                        expect(body.msg).toBe('Not Found')
+
+                    })
+                    
+                });
+
+                it('status 400 - for a bad request', () => {
+                    return request(app)
+                        .get('/api/articles/NaN/comments')
+                        .expect(400)
+                        .then(({ body }) => {
+                        
+                            expect(body.msg).toBe('bad request')
+                    })
+                    
+                });
+
+            })
+})
+      })
     })
 
   
