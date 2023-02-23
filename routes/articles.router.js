@@ -4,11 +4,11 @@ const { getArticles, getArticlesById } = require('../controller/articles.control
 
 articlesRouter.route('/').get(getArticles)
 
-//new //'/' or '/:article_id' or ('/articles/:article_id')
 articlesRouter.route('/:article_id').get(getArticlesById)
  
 
 module.exports = articlesRouter;
+
 
 
 

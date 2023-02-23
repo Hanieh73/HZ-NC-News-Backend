@@ -56,6 +56,7 @@ describe('app', () => {
         })
 
 
+
         describe('GET/api/articles', () => {
             it('status 200 - successful request should return an array of articles ', () => {
                 return request(app)
@@ -77,8 +78,7 @@ describe('app', () => {
                                     comment_count: expect.any(Number)
                                 })
 
-                            
-
+                        
                         })
                     
 
@@ -110,34 +110,33 @@ describe('app', () => {
                 })
 
              })
-            
-//             it('status 200 - responds with an object with the right data type when passes an article id ', () => {
-//                 return request(app)
-//                     .get('/api/articles/1')
-//                     .expect(200)
-//                     .then(({body}) => {
-//                         body.articles.forEach((article) => {
-//                             expect(article).
-//                             toMatchObject({
-//                             author: expect.any(String),
-//                             title: expect.any(String),
-//                             article_id: expect.any(Number),
-//                             body: expect.any(String),
-//                             topic: expect.any(String),
-//                             created_at: expect.any(String),
-//                             votes: expect.any(Number),
-//                             article_img_url: expect.any(String)
+               it('status 200 - responds with an object with the right data type when passes an article id ', () => {
+                return request(app)
+                    .get('/api/articles/1')
+                    .expect(200)
+                    .then(({body}) => {
+                        
+                            expect(body.article).
+                            toMatchObject({
+                            author: expect.any(String),
+                            title: expect.any(String),
+                            article_id: expect.any(Number),
+                            body: expect.any(String),
+                            topic: expect.any(String),
+                            created_at: expect.any(String),
+                            votes: expect.any(Number),
+                            article_img_url: expect.any(String)
 
 
-//                         })
+                        })
     
 
-// })
+
                        
 
-//                     }) 
+                    }) 
 
-//                 })
+                })
                 
             });
             
@@ -148,7 +147,10 @@ describe('app', () => {
                     .then(({body}) => {
                     expect(body.msg).toBe('Not Found')
 
-                })
+        })
+
+
+     
             });
 
             it('status 400 - for a bad request', () => {
@@ -167,5 +169,7 @@ describe('app', () => {
 
     })
 
+   })
 
+    })
 
