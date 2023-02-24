@@ -67,8 +67,9 @@ exports.patchArticle = (req, res, next) => {
   
     patchArticleVoteById(article_id, inc_votes)
         .then((article) => {
+            
             res.status(200)
-            .send(article)
+            .send({ patchedArticle: article})
 
         })
         .catch((err) => {

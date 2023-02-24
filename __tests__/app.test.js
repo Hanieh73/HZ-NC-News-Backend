@@ -323,8 +323,8 @@ describe('app', () => {
                   .send({ inc_votes: 50 })
                   .expect(200)
                   .then(({ body }) => {
-                     
-                  expect(body.votes).toBe(150)
+                     const article = body.patchedArticle
+                  expect(article.votes).toBe(150)
                       
               })
           });
