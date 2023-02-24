@@ -62,6 +62,29 @@ exports.postCommentByArticleId = (article_id, commentData) => {
 
     })
         
-    }
+}
+    
+exports.patchArticleVoteById = (article_id, inc_votes) => {
+    return db.query(`UPDATE articles
+    SET
+    votes = votes + $1
+    WHERE article_id = $2
+    RETURNING *;
+    
+    `, [inc_votes, article_id]).then((response) => {
+        
+ 
+        
+        if (response.rows.length === 0 || !article_id) {
+             return Promise.reject({msg: 'Not Found', status: 404})
+         }
+         
+         else {
+             return response.rows[0]
+        }
+    })
+
+
+}
    
 
