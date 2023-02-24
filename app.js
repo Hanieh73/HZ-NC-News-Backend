@@ -5,7 +5,7 @@ const apiRouter = require('./routes/api.router')
 
 const {handle500Error, handle404Error, handle400Error, handleCustomError} = require('./errorhandler/errorhandler')
 
-// app.use(express.json())
+app.use(express.json())
 
 app.use('/api', apiRouter)
 

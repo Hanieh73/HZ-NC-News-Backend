@@ -39,8 +39,29 @@ exports.fetchCommentsByArticleId = (article_id) => {
              })
         }
      })
-
-       
-
-    
 }
+
+exports.postCommentByArticleId = (article_id, commentData) => {
+    const { username, body } = commentData;
+
+    return db.query(`INSERT INTO comments (body, votes, author, article_id)
+    VALUES
+    ($1, 0, $2, $3)
+    RETURNING *;
+`
+, [body, username, article_id]).then((response) => {
+  
+    
+         if (response.rows.length === 0 || !article_id) {
+             return Promise.reject({msg: 'Not Found', status: 404})
+         }
+         
+         else {
+             return response.rows[0]
+        }
+
+    })
+        
+    }
+   
+
