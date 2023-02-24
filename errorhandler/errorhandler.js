@@ -1,4 +1,4 @@
-//handling custom errors
+// handling custom errors
 exports.handleCustomError = (err, req, res, next) => {
     if(err.status && err.msg) res.status(err.status).send({ msg: err.msg})
     else {
@@ -6,14 +6,22 @@ exports.handleCustomError = (err, req, res, next) => {
 }
 }
 exports.handle404Error = (req, res, next) => {
-    
-    res.status(404).send({msg: 'Not Found'})
+
+       res.status(404).send({msg: 'Not Found'})
+  
+  
 }
 
+//handling psql errors
 exports.handle400Error = (err, req, res, next) => {
-    if (err.code === '22P02') {
+    if (err.code === '22P02' ||  err.code === '23502') {
     res.status(400).send({ msg: 'bad request'})
-    } else {
+    }
+    if (err.code === '23503') {
+          res.status(404).send({msg: 'Not Found'})
+    }
+    
+    else {
         next(err)
     }
     
@@ -24,6 +32,6 @@ exports.handle400Error = (err, req, res, next) => {
 
 //handling errors which haven't been identified to respond with an internal server error
 exports.handle500Error = (err, req, res, next) => {
-    console.log(err)
+  
 res.status(500).send({msg: "Internal Server Error"})
 }

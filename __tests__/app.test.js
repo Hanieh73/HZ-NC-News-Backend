@@ -215,7 +215,105 @@ describe('app', () => {
                 });
 
             })
-})
+
+          
+        })
+      
+          describe('POST/api/articles/:article_id/comments', () => {
+              it('status 201 - post a new comment to article by article_id', () => {
+                    
+                  const newComment = {
+                      username: 'butter_bridge',
+                      body: 'new comment body'
+                  };
+                    return request(app)
+                        .post('/api/articles/1/comments')
+                        .send(newComment)
+                        .expect(201)
+                        .then(({body}) => {
+                            expect(body.comment.body).toEqual('new comment body')
+                            expect(body.comment.article_id).toEqual(1)
+                            expect(body.comment.author).toEqual('butter_bridge')
+                            expect(body.comment).toHaveProperty('created_at')
+                            expect(body.comment).toEqual(
+                              expect.objectContaining({
+                                    body: expect.any(String),
+                                    votes: expect.any(Number),
+                                    author: expect.any(String),
+                                    article_id: expect.any(Number),
+                                  created_at: expect.any(String),
+                                    comment_id: expect.any(Number)
+
+                                })
+                            )
+                            
+                    })
+              });
+              
+              it('status 404 - when passed with valid but non existent article', () => {
+                   const newComment = {
+                      username: 'butter_bridge',
+                      body: 'new comment body'
+                  }
+                  return request(app)
+                      .post('/api/articles/999/comments')
+                      .send(newComment)
+                      .expect(404)
+                      .then((response) => {
+                      expect(response.body.msg).toEqual('Not Found')
+                          
+                  })
+              });
+
+
+              it('status 400 - when passed no comment to an existent article ', () => {
+                  return request(app)
+                      .post('/api/articles/1/comments')
+                      .send({})
+                      .expect(400)
+                      .then((response) => {
+                       expect(response.body.msg).toBe('bad request')   
+                  })
+              });
+
+
+
+                it('status 400 - when passed a comment with a username data that doesnt exist ', () => {
+                   const newComment = {
+                      username: 'I dont exist',
+                      body: 'new comment body'
+                  }
+                  return request(app)
+                      .post('/api/articles/1/comments')
+                      .send(newComment)
+                      .expect(404)
+                      .then((response) => {
+                          console.log(response.body)
+                       expect(response.body.msg).toBe('Not Found')   
+                  })
+              });
+
+
+ it('status 404 - when passed valid comment to an invalid article-id', () => {
+                 const newComment = {
+                      username: 'butter_bridge',
+                      body: 'new comment body'
+                  }
+                     return request(app)
+                      .post('/api/articles/banana/comments')
+                      .send(newComment)
+                      .expect(400)
+                      .then((response) => {
+                       expect(response.body.msg).toBe('bad request')  
+              });
+
+
+            })
+
+
+
+
+            })
       })
     })
 
