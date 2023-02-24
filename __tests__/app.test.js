@@ -288,7 +288,7 @@ describe('app', () => {
                       .send(newComment)
                       .expect(404)
                       .then((response) => {
-                          console.log(response.body)
+                       
                        expect(response.body.msg).toBe('Not Found')   
                   })
               });
@@ -313,7 +313,69 @@ describe('app', () => {
 
 
 
-            })
+          })
+        
+        describe('PATCH/api/articles/:article_id', () => {
+           
+          it('status 200 - increases article vote by the the new vote ', () => {
+              return request(app)
+                  .patch('/api/articles/1')
+                  .send({ inc_votes: 50 })
+                  .expect(200)
+                  .then(({ body }) => {
+                     
+                  expect(body.votes).toBe(150)
+                      
+              })
+          });
+            
+            it('status 404 - when passed a non-existent article-id ', () => {
+                return request(app)
+                    .patch('/api/articles/999')
+                    .send({ inc_votes: 50 })
+                    .expect(404)
+                    .then((response) => {
+                    expect(response.body.msg).toBe('Not Found')
+
+                })
+            });
+
+             it('status 400 - when passed an invalid article-id ', () => {
+                return request(app)
+                    .patch('/api/articles/banana')
+                    .send({ inc_votes: 50 })
+                    .expect(400)
+                    .then((response) => {
+                    expect(response.body.msg).toBe('bad request')
+
+                })
+             });
+            
+             it('status 400 - when passed an empty object', () => {
+                return request(app)
+                    .patch('/api/articles/1')
+                    .send({})
+                    .expect(400)
+                    .then((response) => {
+                    expect(response.body.msg).toBe('bad request')
+
+                })
+            });
+
+            it('status 400 - when passed the wrong type for the inc_votes ', () => {
+                return request(app)
+                    .patch('/api/articles/1')
+                    .send({ inc_votes: 'string' })
+                    .expect(400)
+                    .then((response) => {
+                     expect(response.body.msg).toBe('bad request')
+                })
+                    
+            });
+
+
+        })
+        
       })
     })
 
